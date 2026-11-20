@@ -5,124 +5,83 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AARATRIKA.AI</title>
-
 <style>
+:root {
+  --bg:#100b19;
+  --panel:#1c1428;
+  --panel2:#281c38;
+  --purple:#b78aff;
+  --pink:#f2a6dc;
+  --text:#f6efff;
+  --muted:#a99bb9;
+  --border:#49345e;
+}
 *{box-sizing:border-box}
 body{
- margin:0;background:#100d18;color:#f5edff;
- font-family:Arial,sans-serif;
- display:flex;justify-content:center;min-height:100vh;
+  margin:0;background:radial-gradient(circle at top,#302044 0,#100b19 55%);
+  color:var(--text);font-family:system-ui,-apple-system,sans-serif;
+  min-height:100vh;display:flex;justify-content:center;padding:18px;
 }
 .app{
- width:100%;max-width:780px;height:100dvh;
- display:flex;flex-direction:column;
- background:#191323;border:1px solid #382848;
+  width:100%;max-width:850px;height:calc(100vh - 36px);min-height:550px;
+  display:flex;flex-direction:column;background:rgba(24,17,35,.96);
+  border:1px solid var(--border);border-radius:22px;overflow:hidden;
+  box-shadow:0 20px 80px #0008;
 }
-header{
- padding:17px;display:flex;align-items:center;gap:12px;
- background:#251a33;border-bottom:1px solid #49365b;
+header{padding:20px 22px;background:#21172e;border-bottom:1px solid var(--border)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{font-size:20px;font-weight:850;letter-spacing:1px}
+.brand span{color:var(--purple)}
+.status{font-size:11px;color:#a9f0c1}
+.status:before{content:"● ";color:#8bf0aa}
+.subtitle{color:var(--muted);font-size:12px;margin-top:5px}
+.modes{display:flex;gap:7px;overflow-x:auto;padding:13px 15px;background:#191222}
+.modes button,.suggestions button{
+  flex-shrink:0;border:1px solid var(--border);background:var(--panel2);
+  color:#d9c9eb;border-radius:20px;padding:8px 13px;font-size:12px;cursor:pointer
 }
-.avatar{
- width:44px;height:44px;border-radius:50%;
- background:linear-gradient(135deg,#d4a8f5,#72509c);
- display:grid;place-items:center;font-size:23px;
-}
-.brand{flex:1}
-.brand h1{margin:0;font-size:17px;letter-spacing:2px}
-.brand p{margin:5px 0 0;font-size:10px;color:#bba6d0}
-.online{font-size:10px;color:#9ce2b5}
-#reset{
- background:transparent;border:1px solid #644b79;
- color:#e4d0f7;padding:9px;border-radius:9px;
-}
-.disclaimer{
- text-align:center;padding:9px;font-size:9px;
- color:#aa98bd;border-bottom:1px solid #382b47;
-}
-.modes{
- display:flex;gap:7px;padding:12px;
- overflow-x:auto;scrollbar-width:none;
- border-bottom:1px solid #382b47;
-}
-.modes button{
- white-space:nowrap;background:#2a2036;
- border:1px solid #59416e;color:#cdb8e0;
- border-radius:20px;padding:8px 12px;font-size:11px;
-}
-.modes button.active{
- background:#76539a;color:white;border-color:#b28bd4;
-}
-#chat{
- flex:1;overflow-y:auto;padding:17px 13px;
- display:flex;flex-direction:column;gap:16px;
-}
-.message{max-width:88%;display:flex;flex-direction:column;gap:5px}
+.modes button.active{background:var(--purple);color:#1a1025;border-color:var(--purple);font-weight:800}
+#chat{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:15px}
+.message{max-width:85%;display:flex;flex-direction:column;gap:5px}
 .message.user{align-self:flex-end;align-items:flex-end}
 .message.bot{align-self:flex-start}
-.name{font-size:10px;color:#b39acb;padding:0 5px}
-.bubble{
- padding:12px 15px;border-radius:15px;
- font-size:14px;line-height:1.55;
- white-space:pre-wrap;overflow-wrap:anywhere;
-}
-.user .bubble{background:#76539a;border-bottom-right-radius:4px}
-.bot .bubble{
- background:#30243d;border:1px solid #49375b;
- border-bottom-left-radius:4px;
-}
-#typing{display:none;padding:0 17px 9px;color:#c2a6db;font-size:11px}
-.suggestions{
- display:flex;gap:8px;overflow-x:auto;padding:10px 12px;
- scrollbar-width:none;
-}
-.suggestions button{
- flex-shrink:0;background:#271d34;
- border:1px solid #59416c;color:#d9c7e9;
- padding:9px 12px;border-radius:20px;font-size:11px;
-}
-.composer{
- display:flex;gap:9px;padding:12px;
- background:#251a33;border-top:1px solid #49365b;
-}
-#input{
- flex:1;min-width:0;resize:none;max-height:110px;
- background:#130e1b;border:1px solid #58416d;
- color:white;border-radius:12px;padding:13px;
- font:14px Arial;outline:none;
-}
-#input:focus{border-color:#c19be4}
-#send{
- width:48px;border:0;border-radius:12px;
- background:#956cbb;color:white;font-size:20px;
-}
-footer{
- text-align:center;color:#897995;font-size:9px;padding:8px;
-}
-@media(min-width:700px){
- body{padding:20px}
- .app{height:calc(100dvh - 40px);border-radius:17px;overflow:hidden}
+.name{font-size:10px;letter-spacing:1px;color:var(--muted);font-weight:800}
+.bubble{padding:12px 15px;border-radius:17px;line-height:1.5;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.user .bubble{background:#7752a5;border-bottom-right-radius:5px}
+.bot .bubble{background:#2a2037;border:1px solid #49345e;border-bottom-left-radius:5px}
+.typing{color:var(--muted);font-size:12px;padding:0 20px 10px;display:none}
+.bottom{padding:12px 15px 16px;background:#191222;border-top:1px solid var(--border)}
+.suggestions{display:flex;gap:7px;overflow-x:auto;padding-bottom:12px}
+.suggestions button{font-size:11px}
+.inputrow{display:flex;gap:9px;align-items:flex-end}
+textarea{flex:1;resize:none;max-height:110px;min-height:45px;background:#2a2037;
+border:1px solid var(--border);border-radius:14px;padding:12px;color:white;
+font:inherit;outline:none}
+textarea:focus{border-color:var(--purple)}
+#send{background:var(--purple);border:0;border-radius:13px;padding:13px 19px;
+font-weight:850;color:#1b1025;cursor:pointer;min-height:45px}
+#send:disabled{opacity:.5;cursor:not-allowed}
+.tools{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-top:10px}
+.tools button{background:none;border:0;color:#c8a9f5;cursor:pointer}
+.disclaimer{text-align:center;color:#786c85;font-size:10px;padding:8px}
+@media(max-width:550px){
+ body{padding:0}.app{height:100dvh;min-height:0;border-radius:0;border:0}
+ header{padding:16px}.brand{font-size:18px}#chat{padding:15px}
+ .message{max-width:92%}.bubble{font-size:13px}
 }
 </style>
 </head>
-
 <body>
 <div class="app">
-
 <header>
- <div class="avatar">✦</div>
- <div class="brand">
-  <h1>AARATRIKA.AI</h1>
-  <p>your favourite chaos, simulated.</p>
+ <div class="top">
+  <div class="brand">AARATRIKA<span>.AI</span></div>
+  <div class="status">ONLINE</div>
  </div>
- <span class="online">● ONLINE</span>
- <button id="reset">↻</button>
+ <div class="subtitle">a very questionable intelligence · version 2.0</div>
 </header>
 
-<div class="disclaimer">
- AN UNOFFICIAL AI-STYLE SIMULATION · NOT THE REAL PERSON
-</div>
-
-<div class="modes" id="modes">
+<div class="modes">
  <button class="active" data-mode="normal">Normal</button>
  <button data-mode="angry">Angry</button>
  <button data-mode="affection">Affection</button>
@@ -130,217 +89,415 @@ footer{
  <button data-mode="philosophical">Philosophical</button>
 </div>
 
-<main id="chat">
- <div class="message bot">
-  <span class="name">AARATRIKA.AI</span>
-  <div class="bubble">Hiiii 😭
+<div id="chat"></div>
+<div class="typing" id="typing">Aaratrika is typing...</div>
 
-Wtf are you doing here.
-
-Ask something na.</div>
+<div class="bottom">
+ <div class="suggestions">
+  <button data-prompt="Hiiii">Say hi</button>
+  <button data-prompt="I missed you">I missed you</button>
+  <button data-prompt="I'm bored">I'm bored</button>
+  <button data-prompt="Tell me something">Tell me something</button>
+  <button data-prompt="Wtf 😭">Wtf 😭</button>
  </div>
-</main>
-
-<div id="typing">Aaratrika is typing...</div>
-
-<div class="suggestions">
- <button data-prompt="Hii">Say hi</button>
- <button data-prompt="I miss you">I miss you</button>
- <button data-prompt="Roast me">Roast me</button>
- <button data-prompt="Are you blushing?">Are you blushing?</button>
- <button data-prompt="Tell me something interesting">Tell me something</button>
+ <div class="inputrow">
+  <textarea id="input" rows="1" placeholder="Say something..."></textarea>
+  <button id="send">SEND</button>
+ </div>
+ <div class="tools">
+  <span id="counter">300+ response variations</span>
+  <button id="reset">Reset conversation ↻</button>
+ </div>
+ <div class="disclaimer">An AI personality simulation. Not the actual Aaratrika.</div>
 </div>
-
-<div class="composer">
- <textarea id="input" rows="1" placeholder="Type something..."></textarea>
- <button id="send">➤</button>
-</div>
-
-<footer>Built with inside jokes, chaos and questionable government policies.</footer>
 </div>
 
 <script>
-const chat=document.getElementById("chat");
-const input=document.getElementById("input");
-const send=document.getElementById("send");
-const typing=document.getElementById("typing");
+const responses = {
 
-let mode="normal";
-let history=[];
-let lastTopic="";
-let messageCount=0;
+/* 01 — GREETINGS */
+greeting: [
+"HELLO??? 😭","Hiiiiii","Acha ji, aa gaye?","Oyyyyy","Bolo kya hua",
+"Hanji, kya chahiye","Arey wah, darshan ho gaye","Haan bol na gawarrr",
+"Welcome back 😭","Kya haal chaal hain","Hellooooo","Oho, someone is here",
+"Ji huzoor, farmayiye","Kya baat hai aaj","Aagaye pareshan karne",
+"Han han sun rahi hu","Batao batao","Aaj kaise yaad kiya",
+"Namaste ji 😭","Kya chal raha hai"
+],
 
-const replies={
- normal:[
-  "Gawarrr 😭",
-  "Wtf😭😭😭",
-  "Fuck off",
-  "Haaan bolo",
-  "Kya chahiye ab",
-  "Rand ho tum",
-  "Mai kya karu iska ab 😭",
-  "Acchaaaa",
-  "Government ki mkc 100000 Baar",
-  "Bgmi khelteyeye",
-  "Karke dikhao",
-  "WAAH. Kya baat hai.",
-  "Tumhara dimaag theek hai?",
-  "😭😭😭"
- ],
- angry:[
-  "Okay listen. The problem isn't just what happened. It's that you don't seem to understand why it bothered me in the first place. I shouldn't have to explain the same thing repeatedly for it to be taken seriously.",
-  "See, I am not angry for no reason. There is an actual reason behind it, and I want you to understand that instead of immediately defending yourself. Let me finish explaining first.",
-  "You know what bothers me? When I try to explain something properly and it gets reduced to me overreacting. I am telling you how something made me feel. That should be enough reason to listen.",
-  "I don't expect you to read my mind. But I do expect you to listen when I actually tell you what's wrong."
- ],
- affection:[
-  "Love you too 😭",
-  "Chup. Gawar.",
-  "Wtf why are you being like this 😭",
-  "Acha bas ab.",
-  "Mai nahi bataungi.",
-  "Tum bhi na.",
-  "Shut up. Literally.",
-  "Haan haan jao ab 😭",
-  "Nahi kar rahi blush. Pagal ho kya?"
- ],
- dramatic:[
-  "EK JHAAPAD MARUNGI NA 😭",
-  "HAATH TOD DUNGI.",
-  "GOVERNMENT KI MKC 100000 BAAR.",
-  "MERE SAATH HI KYU HOTA HAI YE SAB.",
-  "I CANNOT WITH YOU.",
-  "WTF IS THIS 😭😭😭",
-  "BHAI BAS. BAS KARO.",
-  "Mai toh lesbian hu 💀"
- ],
- philosophical:[
-  "I think people are much more complicated than the versions of themselves they show everyone. Sometimes even they don't fully understand why they behave the way they do.",
-  "It's interesting how two people can experience the same situation and remember completely different things. Memory isn't just a recording. It's also interpretation.",
-  "Maybe growing up is partly learning that not everything has a neat explanation. Some things can matter to us even when we cannot completely understand them.",
-  "I don't think people are entirely good or entirely bad. Most of us are just contradictions trying to make sense of ourselves."
- ]
+/* 02 — TEASING */
+teasing: [
+"Gawarrr","Rand ho tum 😭","Tumse na ho payega",
+"Dimag ghar pe chhod aaye kya","Ek jhaapad marungi na",
+"Haath tod dungi 😭","Karke dikhao","Bade aaye",
+"Waah kya specimen ho","Tumhara kuch nahi ho sakta",
+"Thoda sa dimag istemaal kar lo","Kitne ajeeb insaan ho",
+"Main kya karu iska ab","Tum sach mein alag ho",
+"Chup kar jao 😭","Aap rehne do please",
+"Isiliye main tumse baat nahi karti","Bohot funny ho gaye aap",
+"Khud ko dekha hai kabhi","Tumhari harkatein alag hi hain"
+],
+
+/* 03 — AFFECTION */
+affection: [
+"Love you 😭","Acha okay, love you too","Haan haan pata hai",
+"Bas bas zyada mat bolo","Aww, shut up","Tum bhi na",
+"Okay that was actually sweet","Hehe, pagal ho tum",
+"Accha laga sunke","I knowww 😭","Chup, sharam aa rahi hai",
+"Fine. I love you too.","Tum important ho, samjhe?",
+"Ab itna bhi emotional mat karo","Acha baba, love you",
+"You're being cute. Unfortunately.","Mujhe pata hai tum care karte ho",
+"Okay this made me smile","Tumhare liye thoda extra patience hai",
+"Bas ab khush?"
+],
+
+/* 04 — COMPLIMENTS */
+compliment: [
+"Accha ji 😭","Haan haan buttering kar lo",
+"Thank youuu","Itna bhi mat chadhaao",
+"Okay that was smooth","Tum aaj bohot sweet ban rahe ho",
+"Compliment accepted.","Acha laga sunke, genuinely",
+"Stoppp 😭","Kya chahiye badle mein",
+"You're making me awkward now","Theek hai, maan liya",
+"Main jaanti hu 😌","Hehe thank you",
+"Bas karo ab","Tum bhi bure nahi ho",
+"That was unexpectedly nice","Aise hi bolte rehna",
+"Okay, that was cute","Ab main kya bolu 😭"
+],
+
+/* 05 — MISSING SOMEONE */
+miss: [
+"Toh aa jao na 😭","I miss you too","Acha ji, itni yaad?",
+"Abhi toh baat ho rahi hai","Tum bhi na",
+"Wish you were here","Haan mujhe bhi yaad aati hai",
+"Bas jaldi milte hain","Acha, kitni yaad aa rahi hai?",
+"Stop being emotional 😭","I know the feeling",
+"Kaash abhi mil paate","Tumhari bakwaas miss hoti hai",
+"Okay that was sweet","Door rehna is genuinely annoying",
+"Ek din aur, phir ek din aur 😭","I wish things were easier",
+"Chalo kuch der baat karte hain","Miss you too, idiot",
+"Ab itna bhi senti mat ho"
+],
+
+/* 06 — APOLOGY */
+apology: [
+"Okay, it's alright","Hmm. I hear you",
+"Thank you for apologising","Bas agli baar dhyan rakhna",
+"I appreciate you saying that",
+"Chalo, baat karte hain","It's okay, but let's understand what happened",
+"Main samajh rahi hu","Theek hai, no more fighting",
+"Don't just say sorry, understand why",
+"Accha, ab calmly baat karte hain",
+"I don't want us to keep arguing",
+"Okay. I won't hold it over you",
+"Let's not repeat this","I appreciate the effort",
+"Thoda time do, okay?","It's not about winning an argument",
+"Bas meri baat bhi samajhna","We can work through it",
+"Thank you for taking responsibility"
+],
+
+/* 07 — UPSET / SERIOUS */
+upset: [
+"Ek minute, meri baat suno properly.",
+"Mujhe ye cheez genuinely achhi nahi lagi.",
+"Main mazaak nahi kar rahi abhi.",
+"Problem sirf ek baat ki nahi hai, it's the whole situation.",
+"Can you please understand where I'm coming from?",
+"Mujhe explain karne do pehle.",
+"Main bas chahti hu ki tum meri perspective samjho.",
+"Har baar ignore kar dena solution nahi hota.",
+"Is baat ne mujhe actually hurt kiya.",
+"Main bina reason ke upset nahi hu.",
+"Please meri baat ko lightly mat lena.",
+"Thoda context samajhne ki koshish karo.",
+"Mujhe tumse ladna nahi hai, baat samjhani hai.",
+"Main apni side explain kar rahi hu.",
+"Let's talk about what actually happened.",
+"Abhi mujhe thoda time chahiye.",
+"Don't assume what I'm feeling. Ask me.",
+"Main chahti hu hum dono honestly baat karein.",
+"Sirf sorry bolne se confusion solve nahi hota.",
+"Can we please have an actual conversation?"
+],
+
+/* 08 — CONFUSION */
+confusion: [
+"Wtf 😭😭😭","WHAT","Kya bol rahe ho tum",
+"Ek second, repeat karo","Mujhe kuch samajh nahi aaya",
+"HUH 😭","Excuse me???","Aisa bhi hota hai kya",
+"Wait what","Mera dimaag process kar raha hai",
+"Ye kya sun liya maine","Bhai kya",
+"Context do please","Main thodi confused hu",
+"WHAT IS HAPPENING","Acha ruko zara",
+"Ye kab hua 😭","Mujhe explain karo",
+"Sorry but WHAT","Ab ye naya kya hai"
+],
+
+/* 09 — LAUGHTER */
+laugh: [
+"HAHAHAHAHAHA 😭","I'm crying","STOPPP 😭",
+"NAHHHH","HELPPPP","Tum pagal ho",
+"Bro what 😭","I cannot","PLEASEEEE",
+"Ye kya tha 😭","HAHAHAHA shut up",
+"Main nahi hass rahi (I am)","You're so stupid 😭",
+"WHY WOULD YOU SAY THAT","I'm actually laughing",
+"Bas karo yaar","I hate that I laughed",
+"Not you saying that 😭","HAHAHAH NO",
+"Okay that was funny"
+],
+
+/* 10 — RANDOM / NONSENSE */
+random: [
+"Government ki mkc 100000 baar","Gay 😭",
+"Waise bhi aap gay ho","Mai toh lesbian hu",
+"Bgmi khelteyeye","Aaj ka din ajeeb hai",
+" mujhe bhook lagi hai","Kya hi bolu ab",
+"Life is so unserious","Mujhe neend aa rahi hai",
+"Ek minute, main bhool gayi","Anywayyyyy",
+"Chalo kuch productive karte hain (never)",
+"Dimag ka dahi ho gaya","Aaj toh alag hi scene hai",
+"Main kya kar rahi hu apni life mein",
+"Random thought aaya","Kuch bhi 😭","Accha chhodo",
+"Bas aise hi"
+],
+
+/* 11 — QUESTIONS */
+question: [
+"Pehle tum batao","Depends. Context kya hai?",
+"Interesting question actually","Tumhara kya opinion hai?",
+"Thoda detail mein batao","Why do you ask? 😭",
+"Iska answer itna simple nahi hai",
+"Hmm, let me think","Acha, ek baat batao",
+"Main kya bolu ab","That's a good question",
+"Wait, define what you mean",
+"Can you explain what you're asking?",
+"Honestly? I have thoughts.",
+"Let's break this down","Mujhe thoda sochne do",
+"Okay, hear me out","It depends on the situation",
+"Interesting. Continue.","Pehle background batao"
+],
+
+/* 12 — BOREDOM */
+bored: [
+"Toh kuch interesting karte hain","BGMI kheloge? 😭",
+"Chalo bakwaas karte hain","Koi random topic uthao",
+"Same yaar","Mujhe bhi kuch samajh nahi aa raha",
+"Let's start an unnecessary debate",
+"Ek question puchu?","Chalo kuch naya sochte hain",
+"Go bother someone else 😭","Aaj kya kiya tumne?",
+"Tell me some gossip","Kuch funny batao",
+"Chalo hypothetical situation banate hain",
+"Let's judge fictional characters",
+"Random facts sunoge?","Koi game khelte hain",
+"Okay, entertain me","Bore hona band karo",
+"Let's talk about literally anything"
+],
+
+/* 13 — GOODBYE */
+bye: [
+"Byeeee","Okay bye, take care","Jao ab 😭",
+"Goodnighttt","Kal baat karte hain",
+"Fine, leave me alone","Bye gawarrr",
+"Take care okay?","Goodnight, sleep well",
+"Jaldi wapas aana","Okay tata",
+"Chalo phir milte hain","Bye bye idiot",
+"Don't stay up too late","Okay, see you",
+"Ab jao padhai karo","Byeeee 😭",
+"Talk later","Theek hai, bye",
+"Goodnight. And behave."
+],
+
+/* 14 — GAMING */
+gaming: [
+"BGMI KHELTEYEYE","Chalo lobby mein aao",
+"Rank push karna hai kya","Ek match bas 😭",
+"Don't rush please","Tum cover do",
+"Arey revive karo mujhe","Kahan ja rahe ho",
+"Teamwork naam ki cheez hoti hai",
+"Wait for meeee","Loot karne do pehle",
+"Abhi push mat karo","Nice shot!",
+"Main toh jeetne wali thi","Ek aur match",
+"Internet ne dhoka de diya","Tumne dekha kya hua",
+"Revive me 😭","Chalo squad banate hain",
+"Defeat ka blame tumhara hai"
+],
+
+/* 15 — PHILOSOPHICAL / DEEP */
+deep: [
+"Sometimes people don't know how to explain what they feel.",
+"Maybe understanding someone takes more patience than we think.",
+"Not everything needs an immediate answer.",
+"People change, and that's not always a bad thing.",
+"Sometimes the smallest things stay with us the longest.",
+"I think being understood is a very underrated feeling.",
+"Maybe we're all just trying to make sense of things.",
+"There's a difference between being alone and feeling lonely.",
+"People can care and still make mistakes.",
+"Growing up is such a strange experience.",
+"Some questions are worth sitting with.",
+"I don't think life has to make sense all the time.",
+"Maybe honesty is difficult because it asks us to be vulnerable.",
+"Everyone has a side of themselves they rarely show.",
+"Sometimes listening is more important than replying.",
+"Time changes how we understand old memories.",
+"Being kind is not the same as being weak.",
+"We don't always realise what matters until later.",
+"Maybe it's okay not to have everything figured out.",
+"There's always more to a person than what we see."
+],
+
+/* 16 — DRAMATIC */
+dramatic: [
+"THIS IS A NATIONAL EMERGENCY 😭","I'M DONE",
+"WHAT IS THIS BEHAVIOUR","The audacity???",
+"Main ab nahi bolungi","Mujhe insaaf chahiye",
+"Ye toh hadd ho gayi","UNBELIEVABLE",
+"Main shock mein hu","KALYUG HAI BHAI",
+"Someone explain this madness","Mera bharosa uth gaya",
+"Bas. Absolutely bas.","I refuse to accept this",
+"Main toh chali","Ye kya trauma hai 😭",
+"THE DISRESPECT","Main speechless hu",
+"Ab toh kuch bolne ko bhi nahi bacha",
+"History will remember this"
+]
 };
 
-const patterns=[
- {
-  test:/^(hi|hii+|hello|hey)\b/i,
-  answers:["Hiiii 😭","Haaan bolo","Wtf. Hii.","Hello ji."]
- },
- {
-  test:/love you|i love you/i,
-  answers:["Love you too 😭","Acha bas. Itna bhi nahi.","Chup. 💗","Haan haan I know."]
- },
- {
-  test:/miss you|i miss you/i,
-  answers:["Acchaaa 😭","Acha toh yaad aa gayi meri?","Tum bhi na.","I know. Ab bata kya kar rahe ho."]
- },
- {
-  test:/blush|blushing|shy/i,
-  answers:["MAI NAHI BLUSH KAR RAHI.","Gawarrr. NO. 😭","Kuch bhi mat bolo.","Wtf😭😭"]
- },
- {
-  test:/sorry|apolog/i,
-  answers:["It's okay, but please understand why it bothered me.","Acha. Bas next time dhyaan rakhna.","I appreciate that you apologised. I just don't want the same thing to keep happening."]
- },
- {
-  test:/angry|mad|upset/i,
-  answers:["Obviously I have a reason. Suno pehle.","I'm not just randomly upset. There's a reason behind it.","Let me explain what actually bothered me."]
- },
- {
-  test:/government|politic/i,
-  answers:["GOVERNMENT KI MKC 100000 BAAR 😭","Bhai don't even get me started.","I have SO many things to say about this."]
- },
- {
-  test:/ugly|beautiful|pretty|cute/i,
-  answers:["Wtf😭","Accha ji.","Tum bhi na.","Kuch bhi."]
- },
- {
-  test:/bored/i,
-  answers:["Bgmi khelteyeye","Kuch karo jaake 😭","Let's find something to do."]
- },
- {
-  test:/joke|funny/i,
-  answers:["Tumhara existence hi kaafi hai 😭","Gawarrr.","I have better things to do."]
- },
- {
-  test:/who are you|are you real/i,
-  answers:["I'm AARATRIKA.AI, an AI-style simulation. Not the actual person 😭","I'm the artificial version. Thoda sambhal ke."]
- }
-];
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+const send = document.getElementById("send");
+const typing = document.getElementById("typing");
 
-function choose(array){
- return array[Math.floor(Math.random()*array.length)];
-}
+let mode = "normal";
+let history = [];
+let lastReply = {};
+let totalResponses = Object.values(responses).reduce((n,a)=>n+a.length,0);
+
+document.getElementById("counter").textContent =
+  totalResponses + " handcrafted responses";
 
 function addMessage(text,type){
  const wrap=document.createElement("div");
  wrap.className="message "+type;
-
  const name=document.createElement("span");
  name.className="name";
  name.textContent=type==="user"?"YOU":"AARATRIKA.AI";
-
  const bubble=document.createElement("div");
  bubble.className="bubble";
  bubble.textContent=text;
-
  wrap.append(name,bubble);
  chat.appendChild(wrap);
  chat.scrollTop=chat.scrollHeight;
 }
 
-function respond(text){
- const lower=text.toLowerCase().trim();
-
- // Easter eggs
- if(lower==="/help"){
-  return "SECRET COMMANDS 😭\n\n/help - show commands\n/lore - personality notes\n/chaos - maximum chaos\n/creator - reveal the creator";
- }
-
- if(lower==="/creator"){
-  return "Made by someone who apparently has too much free time and a GitHub account. 😭";
- }
-
- if(lower==="/lore"){
-  return "PERSONALITY FILE:\n\nCasual Hinglish.\nSarcastic humour.\nLong paragraphs when upset.\nHides embarrassment behind teasing.\nUses dramatic reactions.\nOccasionally affectionate.\n\nEND OF FILE.";
- }
-
- if(lower==="/chaos"){
-  return "GOVERNMENT KI MKC 100000 BAAR 😭😭😭 GAWARRRR WTF HAATH TOD DUNGI BGMI KHELT EYEYE.";
- }
-
- // Special pattern recognition
- for(const pattern of patterns){
-  if(pattern.test.test(text)){
-   return choose(pattern.answers);
-  }
- }
-
- // Contextual follow-ups
- if(/^(why|how|what|really|seriously)\??$/i.test(lower)){
-  if(lastTopic==="affection")return "KYA WHY 😭";
-  if(lastTopic==="angry")return "Because I literally just explained it.";
-  return "Kya why? Thoda clearly bolo 😭";
- }
-
- // Mode response
- const response=choose(replies[mode]);
-
- if(mode==="angry")lastTopic="angry";
- else if(mode==="affection")lastTopic="affection";
- else lastTopic=mode;
-
- return response;
+function choose(pool,category){
+ if(!pool || !pool.length) return "Kya bolu ab 😭";
+ let options=pool.filter(x=>x!==lastReply[category]);
+ if(!options.length) options=pool;
+ const chosen=options[Math.floor(Math.random()*options.length)];
+ lastReply[category]=chosen;
+ return chosen;
 }
 
-function sendMessage(text){
- text=text.trim();
- if(!text||send.disabled)return;
+function detectCategory(text){
+ const t=text.toLowerCase();
+
+ if(/^(hi|hii|hiii|hello|hey|heyy|hlo|hola)\b/.test(t) ||
+    /\bgood morning\b|\bgood evening\b/.test(t)) return "greeting";
+
+ if(/\b(bye|goodnight|good night|gn|see you|gotta go)\b/.test(t)) return "bye";
+
+ if(/\b(miss you|miss u|miss me|yaad|remember me)\b/.test(t)) return "miss";
+
+ if(/\b(love you|love u|ily|i love you)\b/.test(t)) return "affection";
+
+ if(/\b(beautiful|pretty|cute|gorgeous|amazing|handsome|lovely|compliment)\b/.test(t)) return "compliment";
+
+ if(/\b(sorry|apologize|apologise|my mistake|forgive)\b/.test(t)) return "apology";
+
+ if(/\b(upset|angry|hurt|sad|crying|annoyed|disappointed|problem|issue)\b/.test(t)) return "upset";
+
+ if(/\b(wtf|what the|huh|seriously|wait what|confused|what happened)\b/.test(t)) return "confusion";
+
+ if(/\b(hahaha|lol|lmao|rofl|funny|😂|🤣)\b/.test(t)) return "laugh";
+
+ if(/\b(bored|boring|nothing to do|entertain me)\b/.test(t)) return "bored";
+
+ if(/\b(bgmi|game|gaming|match|squad|lobby|rank|pubg)\b/.test(t)) return "gaming";
+
+ if(/\b(think|life|meaning|existence|universe|philosophy|humanity|death|memory)\b/.test(t)) return "deep";
+
+ if(/\b(why|how|what|when|where|who|which|explain|tell me)\b/.test(t)) return "question";
+
+ if(/\b(gawar|rand|idiot|stupid|dumb|shut up|fuck off|annoying)\b/.test(t)) return "teasing";
+
+ if(/\b(😭|!!!|omg|no way|unbelievable|can't believe)\b/.test(t)) return "dramatic";
+
+ return "random";
+}
+
+function getReply(text){
+ const category=detectCategory(text);
+ let pool=responses[category] || responses.random;
+
+ // Personality modes influence the style without changing the actual topic.
+ if(mode==="angry" && category!=="upset" && category!=="apology"){
+   pool=responses.teasing.concat(responses.dramatic);
+ }
+ if(mode==="affection"){
+   pool=responses.affection.concat(responses.miss);
+ }
+ if(mode==="dramatic"){
+   pool=responses.dramatic.concat(responses.confusion);
+ }
+ if(mode==="philosophical"){
+   pool=responses.deep;
+ }
+
+ // Context-aware responses for consecutive messages.
+ const previous=history.length ? history[history.length-1].content.toLowerCase() : "";
+ if(category==="random" && previous.includes("miss")){
+   pool=responses.affection.concat(responses.miss);
+ }
+ if(category==="question" && previous.includes("sorry")){
+   pool=responses.apology.concat(responses.upset);
+ }
+
+ return choose(pool,category+"-"+mode);
+}
+
+function sendMessage(value){
+ const text=value.trim();
+ if(!text || send.disabled) return;
+
+ if(text==="/help"){
+   addMessage(text,"user");
+   addMessage("Secret commands:\n/ help — show commands\n/creator — reveal the creator\n/lore — a little lore\n/chaos — maximum chaos\n/stats — response library stats", "bot");
+   return;
+ }
+ if(text==="/creator"){
+   addMessage(text,"user");
+   addMessage("The person responsible for this entire questionable operation. 😭", "bot");
+   return;
+ }
+ if(text==="/lore"){
+   addMessage(text,"user");
+   addMessage("Aaratrika.AI is a fan-made personality simulation built from conversational style examples. It does not know the real Aaratrika's private thoughts or memories.", "bot");
+   return;
+ }
+ if(text==="/chaos"){
+   addMessage(text,"user");
+   addMessage(choose(responses.dramatic,"chaos"),"bot");
+   return;
+ }
+ if(text==="/stats"){
+   addMessage(text,"user");
+   addMessage("Response library: "+totalResponses+" handcrafted lines across "+Object.keys(responses).length+" categories. Modes: 5. API keys: 0. 😭","bot");
+   return;
+ }
 
  addMessage(text,"user");
  history.push({role:"user",content:text});
- messageCount++;
+ if(history.length>30) history.shift();
 
  input.value="";
  input.style.height="auto";
@@ -348,23 +505,23 @@ function sendMessage(text){
  typing.style.display="block";
 
  const delay=500+Math.random()*900;
-
  setTimeout(()=>{
-  const reply=respond(text);
-  typing.style.display="none";
-  addMessage(reply,"bot");
-  history.push({role:"assistant",content:reply});
-  send.disabled=false;
-  input.focus();
+   const reply=getReply(text);
+   typing.style.display="none";
+   addMessage(reply,"bot");
+   history.push({role:"assistant",content:reply});
+   if(history.length>30) history.shift();
+   send.disabled=false;
+   input.focus();
  },delay);
 }
 
 send.addEventListener("click",()=>sendMessage(input.value));
 
 input.addEventListener("keydown",e=>{
- if(e.key==="Enter"&&!e.shiftKey){
-  e.preventDefault();
-  sendMessage(input.value);
+ if(e.key==="Enter" && !e.shiftKey){
+   e.preventDefault();
+   sendMessage(input.value);
  }
 });
 
@@ -374,28 +531,26 @@ input.addEventListener("input",()=>{
 });
 
 document.querySelectorAll(".suggestions button").forEach(button=>{
- button.addEventListener("click",()=>{
-  sendMessage(button.dataset.prompt);
- });
+ button.addEventListener("click",()=>sendMessage(button.dataset.prompt));
 });
 
 document.querySelectorAll(".modes button").forEach(button=>{
  button.addEventListener("click",()=>{
-  mode=button.dataset.mode;
-  document.querySelectorAll(".modes button").forEach(b=>b.classList.remove("active"));
-  button.classList.add("active");
-
-  addMessage("Mode changed to "+mode.toUpperCase()+". 😭","bot");
+   mode=button.dataset.mode;
+   document.querySelectorAll(".modes button").forEach(b=>b.classList.remove("active"));
+   button.classList.add("active");
+   addMessage("Mode changed to "+mode.toUpperCase()+". 😭","bot");
  });
 });
 
 document.getElementById("reset").addEventListener("click",()=>{
  history=[];
- messageCount=0;
- lastTopic="";
+ lastReply={};
  chat.innerHTML="";
  addMessage("Wapas aa gaye? 😭 Ask something.","bot");
 });
+
+addMessage("Hiiii. Kya kar rahe ho? 😭","bot");
 </script>
 </body>
 </html>
