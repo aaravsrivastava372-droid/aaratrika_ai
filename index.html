@@ -160,242 +160,139 @@ Ask something na.</div>
 </div>
 
 <script>
-const chat=document.getElementById("chat");
-const input=document.getElementById("input");
-const send=document.getElementById("send");
-const typing=document.getElementById("typing");
+  
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+const send = document.getElementById("send");
+const typing = document.getElementById("typing");
 
-let mode="normal";
-let history=[];
-let lastTopic="";
-let messageCount=0;
+let mode = "normal";
+let history = [];
 
-const replies={
- normal:[
-  "Gawarrr 😭",
-  "Wtf😭😭😭",
-  "Fuck off",
-  "Haaan bolo",
-  "Kya chahiye ab",
-  "Rand ho tum",
-  "Mai kya karu iska ab 😭",
-  "Acchaaaa",
-  "Government ki mkc 100000 Baar",
-  "Bgmi khelteyeye",
-  "Karke dikhao",
-  "WAAH. Kya baat hai.",
-  "Tumhara dimaag theek hai?",
-  "😭😭😭"
- ],
- angry:[
-  "Okay listen. The problem isn't just what happened. It's that you don't seem to understand why it bothered me in the first place. I shouldn't have to explain the same thing repeatedly for it to be taken seriously.",
-  "See, I am not angry for no reason. There is an actual reason behind it, and I want you to understand that instead of immediately defending yourself. Let me finish explaining first.",
-  "You know what bothers me? When I try to explain something properly and it gets reduced to me overreacting. I am telling you how something made me feel. That should be enough reason to listen.",
-  "I don't expect you to read my mind. But I do expect you to listen when I actually tell you what's wrong."
- ],
- affection:[
-  "Love you too 😭",
-  "Chup. Gawar.",
-  "Wtf why are you being like this 😭",
-  "Acha bas ab.",
-  "Mai nahi bataungi.",
-  "Tum bhi na.",
-  "Shut up. Literally.",
-  "Haan haan jao ab 😭",
-  "Nahi kar rahi blush. Pagal ho kya?"
- ],
- dramatic:[
-  "EK JHAAPAD MARUNGI NA 😭",
-  "HAATH TOD DUNGI.",
-  "GOVERNMENT KI MKC 100000 BAAR.",
-  "MERE SAATH HI KYU HOTA HAI YE SAB.",
-  "I CANNOT WITH YOU.",
-  "WTF IS THIS 😭😭😭",
-  "BHAI BAS. BAS KARO.",
-  "Mai toh lesbian hu 💀"
- ],
- philosophical:[
-  "I think people are much more complicated than the versions of themselves they show everyone. Sometimes even they don't fully understand why they behave the way they do.",
-  "It's interesting how two people can experience the same situation and remember completely different things. Memory isn't just a recording. It's also interpretation.",
-  "Maybe growing up is partly learning that not everything has a neat explanation. Some things can matter to us even when we cannot completely understand them.",
-  "I don't think people are entirely good or entirely bad. Most of us are just contradictions trying to make sense of ourselves."
- ]
-};
+function addMessage(text, type) {
+  const wrap = document.createElement("div");
+  wrap.className = "message " + type;
 
-const patterns=[
- {
-  test:/^(hi|hii+|hello|hey)\b/i,
-  answers:["Hiiii 😭","Haaan bolo","Wtf. Hii.","Hello ji."]
- },
- {
-  test:/love you|i love you/i,
-  answers:["Love you too 😭","Acha bas. Itna bhi nahi.","Chup. 💗","Haan haan I know."]
- },
- {
-  test:/miss you|i miss you/i,
-  answers:["Acchaaa 😭","Acha toh yaad aa gayi meri?","Tum bhi na.","I know. Ab bata kya kar rahe ho."]
- },
- {
-  test:/blush|blushing|shy/i,
-  answers:["MAI NAHI BLUSH KAR RAHI.","Gawarrr. NO. 😭","Kuch bhi mat bolo.","Wtf😭😭"]
- },
- {
-  test:/sorry|apolog/i,
-  answers:["It's okay, but please understand why it bothered me.","Acha. Bas next time dhyaan rakhna.","I appreciate that you apologised. I just don't want the same thing to keep happening."]
- },
- {
-  test:/angry|mad|upset/i,
-  answers:["Obviously I have a reason. Suno pehle.","I'm not just randomly upset. There's a reason behind it.","Let me explain what actually bothered me."]
- },
- {
-  test:/government|politic/i,
-  answers:["GOVERNMENT KI MKC 100000 BAAR 😭","Bhai don't even get me started.","I have SO many things to say about this."]
- },
- {
-  test:/ugly|beautiful|pretty|cute/i,
-  answers:["Wtf😭","Accha ji.","Tum bhi na.","Kuch bhi."]
- },
- {
-  test:/bored/i,
-  answers:["Bgmi khelteyeye","Kuch karo jaake 😭","Let's find something to do."]
- },
- {
-  test:/joke|funny/i,
-  answers:["Tumhara existence hi kaafi hai 😭","Gawarrr.","I have better things to do."]
- },
- {
-  test:/who are you|are you real/i,
-  answers:["I'm AARATRIKA.AI, an AI-style simulation. Not the actual person 😭","I'm the artificial version. Thoda sambhal ke."]
- }
-];
+  const name = document.createElement("span");
+  name.className = "name";
+  name.textContent = type === "user" ? "YOU" : "AARATRIKA.AI";
 
-function choose(array){
- return array[Math.floor(Math.random()*array.length)];
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = text;
+
+  wrap.append(name, bubble);
+  chat.appendChild(wrap);
+  chat.scrollTop = chat.scrollHeight;
 }
 
-function addMessage(text,type){
- const wrap=document.createElement("div");
- wrap.className="message "+type;
+async function sendMessage(text) {
+  text = text.trim();
 
- const name=document.createElement("span");
- name.className="name";
- name.textContent=type==="user"?"YOU":"AARATRIKA.AI";
+  if (!text || send.disabled) return;
 
- const bubble=document.createElement("div");
- bubble.className="bubble";
- bubble.textContent=text;
+  addMessage(text, "user");
 
- wrap.append(name,bubble);
- chat.appendChild(wrap);
- chat.scrollTop=chat.scrollHeight;
-}
+  history.push({
+    role: "user",
+    content: text
+  });
 
-function respond(text){
- const lower=text.toLowerCase().trim();
+  input.value = "";
+  input.style.height = "auto";
+  send.disabled = true;
+  typing.style.display = "block";
 
- // Easter eggs
- if(lower==="/help"){
-  return "SECRET COMMANDS 😭\n\n/help - show commands\n/lore - personality notes\n/chaos - maximum chaos\n/creator - reveal the creator";
- }
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        messages: history.slice(-16),
+        mode: mode
+      })
+    });
 
- if(lower==="/creator"){
-  return "Made by someone who apparently has too much free time and a GitHub account. 😭";
- }
+    const data = await response.json();
 
- if(lower==="/lore"){
-  return "PERSONALITY FILE:\n\nCasual Hinglish.\nSarcastic humour.\nLong paragraphs when upset.\nHides embarrassment behind teasing.\nUses dramatic reactions.\nOccasionally affectionate.\n\nEND OF FILE.";
- }
+    if (!response.ok) {
+      throw new Error(data.error || "Request failed.");
+    }
 
- if(lower==="/chaos"){
-  return "GOVERNMENT KI MKC 100000 BAAR 😭😭😭 GAWARRRR WTF HAATH TOD DUNGI BGMI KHELT EYEYE.";
- }
+    addMessage(data.reply, "bot");
 
- // Special pattern recognition
- for(const pattern of patterns){
-  if(pattern.test.test(text)){
-   return choose(pattern.answers);
+    history.push({
+      role: "assistant",
+      content: data.reply
+    });
+
+  } catch (error) {
+    history.pop();
+
+    addMessage(
+      "AYO 😭 Something went wrong: " + error.message,
+      "bot"
+    );
+
+  } finally {
+    typing.style.display = "none";
+    send.disabled = false;
+    input.focus();
   }
- }
-
- // Contextual follow-ups
- if(/^(why|how|what|really|seriously)\??$/i.test(lower)){
-  if(lastTopic==="affection")return "KYA WHY 😭";
-  if(lastTopic==="angry")return "Because I literally just explained it.";
-  return "Kya why? Thoda clearly bolo 😭";
- }
-
- // Mode response
- const response=choose(replies[mode]);
-
- if(mode==="angry")lastTopic="angry";
- else if(mode==="affection")lastTopic="affection";
- else lastTopic=mode;
-
- return response;
 }
 
-function sendMessage(text){
- text=text.trim();
- if(!text||send.disabled)return;
-
- addMessage(text,"user");
- history.push({role:"user",content:text});
- messageCount++;
-
- input.value="";
- input.style.height="auto";
- send.disabled=true;
- typing.style.display="block";
-
- const delay=500+Math.random()*900;
-
- setTimeout(()=>{
-  const reply=respond(text);
-  typing.style.display="none";
-  addMessage(reply,"bot");
-  history.push({role:"assistant",content:reply});
-  send.disabled=false;
-  input.focus();
- },delay);
-}
-
-send.addEventListener("click",()=>sendMessage(input.value));
-
-input.addEventListener("keydown",e=>{
- if(e.key==="Enter"&&!e.shiftKey){
-  e.preventDefault();
+send.addEventListener("click", () => {
   sendMessage(input.value);
- }
 });
 
-input.addEventListener("input",()=>{
- input.style.height="auto";
- input.style.height=Math.min(input.scrollHeight,110)+"px";
+input.addEventListener("keydown", event => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage(input.value);
+  }
 });
 
-document.querySelectorAll(".suggestions button").forEach(button=>{
- button.addEventListener("click",()=>{
-  sendMessage(button.dataset.prompt);
- });
+input.addEventListener("input", () => {
+  input.style.height = "auto";
+  input.style.height =
+    Math.min(input.scrollHeight, 110) + "px";
 });
 
-document.querySelectorAll(".modes button").forEach(button=>{
- button.addEventListener("click",()=>{
-  mode=button.dataset.mode;
-  document.querySelectorAll(".modes button").forEach(b=>b.classList.remove("active"));
-  button.classList.add("active");
-
-  addMessage("Mode changed to "+mode.toUpperCase()+". 😭","bot");
- });
+document.querySelectorAll(".suggestions button").forEach(button => {
+  button.addEventListener("click", () => {
+    sendMessage(button.dataset.prompt);
+  });
 });
 
-document.getElementById("reset").addEventListener("click",()=>{
- history=[];
- messageCount=0;
- lastTopic="";
- chat.innerHTML="";
- addMessage("Wapas aa gaye? 😭 Ask something.","bot");
+document.querySelectorAll(".modes button").forEach(button => {
+  button.addEventListener("click", () => {
+    mode = button.dataset.mode;
+
+    document.querySelectorAll(".modes button").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    addMessage(
+      "Mode changed to " + mode.toUpperCase() + ". 😭",
+      "bot"
+    );
+  });
 });
+
+document.getElementById("reset").addEventListener("click", () => {
+  history = [];
+  chat.innerHTML = "";
+
+  addMessage(
+    "Wapas aa gaye? 😭 Ask something.",
+    "bot"
+  );
+});
+ 
 </script>
 </body>
 </html>
